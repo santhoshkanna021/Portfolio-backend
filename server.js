@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 // ✅ API Routes
-app.use('/api/contact', contactRouter);
+app.use('/', contactRouter);
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
