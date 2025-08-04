@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const contactRouter = require('./routers/contact');
 const path = require('path');
+const contactRouter = require('./routers/contact');
 
 dotenv.config();
 
@@ -10,23 +10,27 @@ const app = express();
 
 // ✅ Middleware
 app.use(cors({
-  origin: 'https://portfolio-frontend-eqx2.vercel.app', // ✅ Your actual deployed frontend
+  origin: process.env.FRONTEND_ORIGIN || 'http://localhost:3000', // safer + configurable
+  methods: ['GET', 'POST'],
+  credentials: true,
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Root Route
+// ✅ API Health Check
 app.get('/', (req, res) => {
   res.send('✅ API is running.');
 });
 
-// ✅ API Routes
-app.use('/', contactRouter);
+// ✅ Routes
+app.use('/api/contact', contactRouter); // prefixed route is better for scalability
+
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
 
 module.exports = app;
