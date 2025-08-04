@@ -2,27 +2,29 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-const router = require('./routers/contact');
+const contactRouter = require('./routers/contact');
 
 dotenv.config();
 const app = express();
 
-// Middleware
+// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Serve only static files like thankyou.html
-app.use(express.static(__dirname));
+// Serve static files (like thankyou.html)
+app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ API routes
-app.use('/api/contact', router);
+// API Routes
+app.use('/', contactRouter);
 
-// Optional: Root fallback (optional)
+// Optional fallback
 app.get('/', (req, res) => {
-  res.send('Backend is running. No index.html or images are served.');
+  res.send('Backend is running. No index.html found.');
 });
 
-// Start server
+// Server start
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
+});

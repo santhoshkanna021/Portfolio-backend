@@ -4,20 +4,20 @@ require('dotenv').config();
 const Contact = async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
 
-  // ✅ Setup transporter
+  // ✅ Configure the transporter
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
+      pass: process.env.MAIL_PASS, // Make sure this is an App Password
     },
   });
 
-  // ✅ Mail options
+  // ✅ Email options
   const mailOptions = {
     from: process.env.MAIL_USER,
     to: process.env.RECEIVER_EMAIL,
-    subject: `Contact from Portfolio: ${subject}`,
+    subject: `Contact from Portfolio: ${subject || 'No Subject'}`,
     replyTo: email,
     text: `
 Name: ${name}
@@ -31,15 +31,14 @@ Message: ${message}
   try {
     await transporter.sendMail(mailOptions);
 
-    // ✅ If you're submitting from a form and want to redirect:
-    res.status(200).redirect('/thankyou.html');
-
-    // ✅ If you're using fetch() or Axios on frontend, you should return JSON instead:
-    // res.status(200).json({ message: 'Message sent successfully' });
+    // ✅ Send JSON response for fetch() to handle
+    res.status(200).json({ success: true, message: 'Email sent successfully' });
 
   } catch (err) {
-    console.error('Mail error:', err.message);
-    res.status(500).send('Something went wrong. Please try again later.');
+    console.error('❌ Mail error:', err);
+
+    // ✅ Respond with error message
+    res.status(500).json({ success: false, message: 'Server error: email not sent' });
   }
 };
 
