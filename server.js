@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 // ✅ Routes
-app.use('/api/contact', contactRouter); // prefixed route is better for scalability
+app.use('/', contactRouter); // prefixed route is better for scalability
 
 
 // ✅ Start Server
