@@ -8,24 +8,25 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// ✅ Middleware
+app.use(cors({
+  origin: 'https://portfolio-frontend-eqx2.vercel.app', // ✅ Your actual deployed frontend
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Root Route
+// ✅ Root Route
 app.get('/', (req, res) => {
   res.send('✅ API is running.');
 });
 
-// Routes
+// ✅ API Routes
 app.use('/api/contact', contactRouter);
 
-// Start Server
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
 });
-
 
 module.exports = app;
