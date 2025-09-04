@@ -7,7 +7,12 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": ["express", "backend", "portfolio", "vercel"],
+  "keywords": [
+    "express",
+    "backend",
+    "portfolio",
+    "vercel"
+  ],
   "author": "Santhoshkanna",
   "license": "ISC",
   "type": "commonjs",
